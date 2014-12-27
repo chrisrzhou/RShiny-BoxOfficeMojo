@@ -1,0 +1,69 @@
+h1, h2 {
+    color: steelblue;
+}
+
+h3 {
+    font-size: 1.4em;
+    color: darkgray;
+}
+
+.text-small {
+    font-size: 12px;
+    font-style: italic;
+}
+
+tfoot {
+    display: table-header-group;
+}
+
+table {
+    font-size: 11px;
+}
+
+label[for=studios_studio1] {
+    color: #1f77b4;
+}
+
+label[for=studios_studio2] {
+    color: #ff7f0e;
+}
+
+label[for=studios_studio3] {
+    color: #2ca02c;
+}
+
+label[for=actors_actor1] {
+    color: #1f77b4;
+}
+
+label[for=actors_actor2] {
+    color: #ff7f0e;
+}
+
+label[for=actors_actor3] {
+    color: #2ca02c;
+}
+
+label[for=directors_director1] {
+    color: #1f77b4;
+}
+
+label[for=directors_director2] {
+    color: #ff7f0e;
+}
+
+label[for=directors_director3] {
+    color: #2ca02c;
+}
+
+label[for=producers_producer1] {
+    color: #1f77b4;
+}
+
+label[for=producers_producer2] {
+    color: #ff7f0e;
+}
+
+label[for=producers_producer3] {
+    color: #2ca02c;
+}
