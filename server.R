@@ -85,8 +85,8 @@ shinyServer(function(input, output) {
             scale_x_continuous(breaks=seq(min(df$YEAR), max(df$YEAR), by=1)) + 
             scale_y_continuous(labels=dollar) + 
             labs(title="Annual Top 10 Studio Rankings by Box Office",
-                 x="Year",
-                 y="Box Office ($M)") + 
+                 x="YEAR",
+                 y="BOX OFFICE ($M)") + 
             theme(panel.background = element_blank())
         return(plot)
     })
@@ -109,8 +109,8 @@ shinyServer(function(input, output) {
             scale_fill_manual(values=colormap) + 
             scale_x_continuous(breaks=as.integer(seq(min(df$YEAR), max(df$YEAR), length.out=3))) + 
             labs(title="Annual Top 10 Studio Rankings by Movies Produced",
-                 x="Year",
-                 y="Movies Produced") + 
+                 x="YEAR",
+                 y="MOVIES PRODUCED") + 
             theme(panel.background = element_blank(),
                   panel.margin = unit(2, "lines"))
         return(plot)
@@ -134,7 +134,7 @@ shinyServer(function(input, output) {
             scale_fill_manual(values=D3COLORMAP20) + 
             scale_y_continuous(breaks=pretty_breaks(5)) + 
             labs(title=sprintf("Annual Oscar Winners (by %s)", metric),
-                 x="Oscars Winner",
+                 x="OSCARS",
                  y=metric) + 
             theme(panel.background = element_blank()) + 
             coord_flip()
@@ -175,36 +175,8 @@ shinyServer(function(input, output) {
                       size=3.5, hjust=0, fontface="italic") + 
             scale_fill_manual(values=colormap) + 
             scale_y_continuous(breaks=pretty_breaks(5)) + 
-            labs(title=sprintf("Top Actors by %s", metric),
-                 x="Actor",
-                 y=sprintf("%s", metric)) + 
-            theme(panel.background = element_blank(),
-                  legend.position = "none") + 
-            coord_flip()
-        return(plot)
-    })
-    
-    
-    output$producers_boxoffice <- renderPlot({
-        # get data from dataframe
-        metric <- input$producers_movies_metric
-        df <- resource.producers() %>%
-            arrange_(metric) %>%  # dplyr arrange_ is arrange but allowing passing strings, in our case we pass a dynamic reactive variable
-            mutate(PERSON = factor(PERSON, levels=unique(PERSON)))  # convert to fproducer for fixing plot sort ordering
-        
-        # Build colormap
-        producers <- unique(df$PERSON)  # get list of unique producers in filtered dataframe
-        colormap <- helper.colormapper(producers, c(input$producers_producer1, input$producers_producer2, input$producers_producer3))
-        
-        # plotting
-        plot <- ggplot(df, aes_string(x="PERSON", y=metric, fill="PERSON")) + 
-            geom_bar(stat="identity", alpha=0.75) + 
-            geom_text(aes_string(label=metric),
-                      size=3.5, hjust=0, fontface="italic") + 
-            scale_fill_manual(values=colormap) + 
-            scale_y_continuous(breaks=pretty_breaks(5)) + 
-            labs(title=sprintf("Top producers by %s)", metric),
-                 x="producer",
+            labs(title=sprintf("Top 50 Actors by %s", metric),
+                 x="ACTORS",
                  y=sprintf("%s", metric)) + 
             theme(panel.background = element_blank(),
                   legend.position = "none") + 
@@ -231,14 +203,43 @@ shinyServer(function(input, output) {
                       size=3.5, hjust=0, fontface="italic") + 
             scale_fill_manual(values=colormap) + 
             scale_y_continuous(breaks=pretty_breaks(5)) + 
-            labs(title=sprintf("Top directors by %s", metric),
-                 x="director",
+            labs(title=sprintf("Top 50 Directors by %s", metric),
+                 x="DIRECTORS",
                  y=sprintf("%s", metric)) + 
             theme(panel.background = element_blank(),
                   legend.position = "none") + 
             coord_flip()
         return(plot)
     })
+    
+    
+    output$producers_boxoffice <- renderPlot({
+        # get data from dataframe
+        metric <- input$producers_movies_metric
+        df <- resource.producers() %>%
+            arrange_(metric) %>%  # dplyr arrange_ is arrange but allowing passing strings, in our case we pass a dynamic reactive variable
+            mutate(PERSON = factor(PERSON, levels=unique(PERSON)))  # convert to fproducer for fixing plot sort ordering
+        
+        # Build colormap
+        producers <- unique(df$PERSON)  # get list of unique producers in filtered dataframe
+        colormap <- helper.colormapper(producers, c(input$producers_producer1, input$producers_producer2, input$producers_producer3))
+        
+        # plotting
+        plot <- ggplot(df, aes_string(x="PERSON", y=metric, fill="PERSON")) + 
+            geom_bar(stat="identity", alpha=0.75) + 
+            geom_text(aes_string(label=metric),
+                      size=3.5, hjust=0, fontface="italic") + 
+            scale_fill_manual(values=colormap) + 
+            scale_y_continuous(breaks=pretty_breaks(5)) + 
+            labs(title=sprintf("Top 50 Producers by %s)", metric),
+                 x="PRODUCERS",
+                 y=sprintf("%s", metric)) + 
+            theme(panel.background = element_blank(),
+                  legend.position = "none") + 
+            coord_flip()
+        return(plot)
+    })
+    
     
     
     # =========================================================================

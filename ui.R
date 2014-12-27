@@ -21,16 +21,16 @@ shinyUI(fluidPage(
                 selectInput(inputId="studios_studio1", label="Highlight Studio 1:", choices=choices$studios, selected=choices$studios[[1]]),
                 selectInput(inputId="studios_studio2", label="Highlight Studio 2:", choices=choices$studios, selected=choices$studios[[2]]),
                 selectInput(inputId="studios_studio3", label="Highlight Studio 3:", choices=choices$studios, selected=choices$studios[[3]]),
-                sliderInput(inputId="studios_years_min", label="Years", min=min(choices$studios_years), max=max(choices$studios_years), value=min(choices$studios_years), step=1, format=""),
-                sliderInput(inputId="studios_years_max", label="", min=min(choices$studios_years), max=max(choices$studios_years), value=max(choices$studios_years), step=1, format="")
+                sliderInput(inputId="studios_years_min", label="Years", min=min(choices$studios_years), max=max(choices$studios_years), value=min(choices$studios_years), step=1, format="####"),
+                sliderInput(inputId="studios_years_max", label="", min=min(choices$studios_years), max=max(choices$studios_years), value=max(choices$studios_years), step=1, format="####")
             ),
             
             conditionalPanel(
                 condition="input.tabset == 'Oscars'",
                 h3("Filters"),
                 selectInput(inputId="oscars_metric", label="Select Metric", choices=choices$oscars_metric, selected=choices$oscars_metric[[1]]),
-                sliderInput(inputId="oscars_years_min", label="Years", min=min(choices$oscars_years), max=max(choices$oscars_years), value=min(choices$oscars_years), step=1, format=""),
-                sliderInput(inputId="oscars_years_max", label="", min=min(choices$oscars_years), max=max(choices$oscars_years), value=max(choices$oscars_years), step=1, format="")
+                sliderInput(inputId="oscars_years_min", label="Years", min=min(choices$oscars_years), max=max(choices$oscars_years), value=min(choices$oscars_years), step=1, format="####"),
+                sliderInput(inputId="oscars_years_max", label="", min=min(choices$oscars_years), max=max(choices$oscars_years), value=max(choices$oscars_years), step=1, format="####")
             ),
             
             conditionalPanel(
@@ -63,8 +63,8 @@ shinyUI(fluidPage(
         mainPanel(
             tabsetPanel(id="tabset",
                         tabPanel("Studios",
-                                 h2("Studios"),
-                                 p(class="text-small", "This section displays visualizations of studio rankings by box office over time, as well as a facet plot of movies produced by studios over time.  You can use the highlight filters to the left to highlight specific studios listed in the legends of the plots shown below."),
+                                 h2("Top 10 Studios"),
+                                 p(class="text-small", "This section displays visualizations of the Top 10 studio rankings by box office over time, as well as a facet plot of movies produced by studios over time.  You can use the highlight filters to the left to highlight specific studios listed in the legends of the plots shown below."),
                                  hr(),
                                  
                                  h3("Box Office Time Series"),
@@ -112,12 +112,13 @@ shinyUI(fluidPage(
                         ),
                         
                         tabPanel("Actors",
-                                 h2("Actors"),
-                                 p(class="text-small", "This section displays visualizations of actors rankings by box office and movies acted.  You can use the highlight filters to the left to highlight specific actors listed in the legends of the plots shown below."),
+                                 h2("Top 50 Actors"),
+                                 p(class="text-small", "This section displays visualizations of the top 50 actors rankings by box office and movies acted.  You can use the highlight filters to the left to highlight specific actors listed in the legends of the plots shown below."),
                                  hr(),
                                  
                                  h3("Rankings"),
                                  p(class="text-small", "Visualizes the rankings of actors.  Choose between total, average, or best movie box office earnings, or total movies acted"),
+                                 p(class="text-small", "Box office units are in million dollars ($M)."),
                                  plotOutput("actors_boxoffice", height=600, width="auto"),
                                  hr(),
                                  
@@ -131,12 +132,13 @@ shinyUI(fluidPage(
                         ),
                         
                         tabPanel("Directors",
-                                 h2("Directors"),
-                                 p(class="text-small", "This section displays visualizations of directors rankings by box office and movies directred.  You can use the highlight filters to the left to highlight specific directors listed in the legends of the plots shown below."),
+                                 h2("Top 50 Directors"),
+                                 p(class="text-small", "This section displays visualizations of the top 50 directors rankings by box office and movies directred.  You can use the highlight filters to the left to highlight specific directors listed in the legends of the plots shown below."),
                                  hr(),
                                  
                                  h3("Rankings"),
                                  p(class="text-small", "Visualizes the rankings of directors.  Choose between total, average, or best movie box office earnings, or total movies directed"),
+                                 p(class="text-small", "Box office units are in million dollars ($M)."),
                                  plotOutput("directors_boxoffice", height=600, width="auto"),
                                  hr(),
                                  
@@ -150,12 +152,13 @@ shinyUI(fluidPage(
                         ),
                         
                         tabPanel("Producers",
-                                 h2("Producers"),
-                                 p(class="text-small", "This section displays visualizations of producers rankings by box office and movies produced.  You can use the highlight filters to the left to highlight specific producers listed in the legends of the plots shown below."),
+                                 h2("Top 50 Producers"),
+                                 p(class="text-small", "This section displays visualizations of the top 50 producers rankings by box office and movies produced.  You can use the highlight filters to the left to highlight specific producers listed in the legends of the plots shown below."),
                                  hr(),
                                  
                                  h3("Rankings"),
                                  p(class="text-small", "Visualizes the rankings of producers.  Choose between total, average, or best movie box office earnings, or total movies produced."),
+                                 p(class="text-small", "Box office units are in million dollars ($M)."),
                                  plotOutput("producers_boxoffice", height=600, width="auto"),
                                  hr(),
                                  
