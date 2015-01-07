@@ -32,7 +32,7 @@ choices <- list(
     directors = unique(dataframes$directors$PERSON),
     producers = unique(dataframes$producers$PERSON),
     oscars_metric = c("BOXOFFICE", "NOMINATIONS", "WINS", "WIN_PERCENTAGE"),
-    movies_metric = c("TOTAL_BO", "AVERAGE_BO", "BEST_BO", "MOVIES_COUNT")
+    movies_metric = c("BEST_BO", "TOTAL_BO", "AVERAGE_BO", "MOVIES_COUNT")
 )
 
 
@@ -60,4 +60,8 @@ helper.colormapper <- function(array, conditions) {
     })
     colormap <- setNames(colors, array)
     return(colormap)
+}
+
+helper.plotPeople <- function() {
+    
 }

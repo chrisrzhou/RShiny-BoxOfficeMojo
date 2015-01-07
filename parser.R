@@ -1,7 +1,7 @@
 # Load libraries
 library(XML)
 library(dplyr)
-
+options(warn=-1)  # turn off unneccessary NON-EXISTING NA warnings in the code from XML library
 
 
 # =========================================================================
@@ -31,17 +31,24 @@ get_data_studios <- function() {
 # =========================================================================
 get_data_oscars <- function() {
     url <- "http://www.boxofficemojo.com/oscar/?sort=studio&order=ASC&p=.htm"
-    tables <- readHTMLTable(url, header=TRUE, stringsAsFactors=FALSE)
+    colNames <- c("ROW"="character",
+                  "YEAR"="numeric",
+                  "MOVIE"="character",
+                  "STUDIO"="character",
+                  "BOXOFFICE"="Currency",
+                  "NOMINATIONS"="numeric",
+                  "WINS"="numeric",
+                  "RELEASEDATE"="character")
+    
+    # get data
+    tables <- readHTMLTable(url, header=TRUE, stringsAsFactors=FALSE, colClasses=unname(colNames))
     df <- tables[[4]]  # data is in the 4th table
     
     # reshape data
-    colnames(df) <- c("ROW", "YEAR", "MOVIE", "STUDIO", "BOXOFFICE", "NOMINATIONS", "WINS", "RELEASEDATE")  # rename columns
+    colnames(df) <- names(colNames)
     df <- df %>%
-        select(YEAR, MOVIE, STUDIO, BOXOFFICE, NOMINATIONS, WINS, RELEASEDATE) %>%
-        mutate(BOXOFFICE = round(sapply(BOXOFFICE, convert_gross_sales) / 1000000, 1),
-               YEAR = as.integer(YEAR),
-               NOMINATIONS = as.numeric(NOMINATIONS),
-               WINS = as.numeric(WINS),
+        select(-ROW) %>%
+        mutate(BOXOFFICE = round(BOXOFFICE / 1000000, 2),
                WIN_PERCENTAGE = round(WINS / NOMINATIONS, 4)) %>%
         arrange(-YEAR)
     return(df)
@@ -97,20 +104,24 @@ get_data_producers <- function() {
 # =========================================================================
 scrape_table_studios <- function(year) {
     url <- sprintf("http://www.boxofficemojo.com/studio/?view=majorstudio&view2=yearly&yr=%s&p=.htm", year)
-    tables <- readHTMLTable(url, header=TRUE, stringsAsFactors=FALSE)
-    table <- tables[[4]]  # data is in the 4th table
+    colNames <- c("RANK"="integer",
+                  "STUDIO"="character",
+                  "MARKETSHARE"="Percent",
+                  "BOXOFFICE"="Currency",
+                  "MOVIES_COUNT"="integer",
+                  "MOVIES_YEAR"="integer")
+    
+    # get data
+    tables <- readHTMLTable(url, header=TRUE, stringsAsFactors=FALSE, colClasses=unname(colNames))
+    df <- tables[[4]]  # data is in the 4th table
+    
     
     # reshape data
-    colnames(table) <- c("RANK", "STUDIO", "MARKETSHARE", "BOXOFFICE", "MOVIES_COUNT", "MOVIES_YEAR")  # rename columns
-    table <- table %>%
-        select(RANK, STUDIO, BOXOFFICE, MOVIES_COUNT) %>%
-        mutate(BOXOFFICE = sapply(BOXOFFICE, convert_gross_sales),
-               RANK = as.integer(RANK),
-               MARKETSHARE = BOXOFFICE / sum(BOXOFFICE),
-               MOVIES_COUNT = as.integer(MOVIES_COUNT),
-               YEAR = year) %>%
+    colnames(df) <- names(colNames)
+    df <- df %>%
+        mutate(YEAR = year) %>%
         filter(RANK <= 10)  # limit data to top 10 studios
-    return(table)
+    return(df)
 }
 
 
@@ -124,36 +135,19 @@ scrape_table_studios <- function(year) {
 # =========================================================================
 scrape_people <- function(role) {
     url <- sprintf("http://www.boxofficemojo.com/people/?view=%s&sort=sumgross&order=DESC&p=.htm", role)
-    tables <- readHTMLTable(url, header=TRUE, stringsAsFactors=FALSE)
+    colNames <- c("RANK"="numeric",
+                  "PERSON"="character",
+                  "TOTAL_BO"="Currency",
+                  "MOVIES_COUNT"="numeric",
+                  "AVERAGE_BO"="Currency",
+                  "BEST_PICTURE"="character",
+                  "BEST_BO"="Currency")
+    
+    # get data
+    tables <- readHTMLTable(url, header=TRUE, stringsAsFactors=FALSE, colClasses=unname(colNames))
     df <- tables[[4]]  # data is in the 4th table
     
     # reshape data
-    colnames(df) <- c("RANK", "PERSON", "TOTAL_BO", "MOVIES_COUNT", "AVERAGE_BO", "BEST_PICTURE", "BEST_BO")  # rename columns
-    df <- df %>%
-        select(RANK, PERSON, TOTAL_BO, MOVIES_COUNT, AVERAGE_BO, BEST_PICTURE, BEST_BO) %>%
-        mutate(RANK = as.integer(RANK),
-               TOTAL_BO = sapply(TOTAL_BO, convert_gross_sales),
-               MOVIES_COUNT = as.integer(MOVIES_COUNT),
-               AVERAGE_BO = sapply(AVERAGE_BO, convert_gross_sales),
-               BEST_BO = sapply(BEST_BO, convert_gross_sales))
+    colnames(df) <- names(colNames)
     return(df)
-}
-
-
-
-# =========================================================================
-# helper function convert_gross_sales
-#
-# @description: Converts a string input and returns float value in units of million.
-# @param value: string input
-# @return: float value in units of million
-# =========================================================================
-convert_gross_sales <- function(value) {
-    value <- gsub(",", "", value)  # remove financial formatting
-    if(substr(value, nchar(value), nchar(value)) == "k") {  # if thousands, return result in millions
-        value <- as.numeric(substr(value, 2, nchar(value) - 1)) / 1000
-    } else {
-        value <- as.numeric(substr(value, 2, nchar(value)))
-    }
-    return(value)
 }

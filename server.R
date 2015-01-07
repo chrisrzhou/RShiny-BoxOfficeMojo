@@ -127,17 +127,19 @@ shinyServer(function(input, output) {
         # convert to factor for fixing plot sort ordering
         
         # plotting
+        mean_value = round(mean(df[, metric]), 2)
         plot <- ggplot(df, aes_string(x="MOVIE", y=metric, fill="STUDIO")) + 
             geom_bar(stat="identity", alpha=0.5) + 
             geom_text(aes_string(label=metric),
                       size=3.5, hjust=0, fontface="italic") + 
+            geom_hline(yintercept=mean_value, linetype="longdash", color="steelblue") + 
             scale_fill_manual(values=D3COLORMAP20) + 
             scale_y_continuous(breaks=pretty_breaks(5)) + 
-            labs(title=sprintf("Annual Oscar Winners (by %s)", metric),
+            labs(title=sprintf("Annual Oscar Winners\n(by %s, mean: %s)", metric, mean_value),
                  x="OSCARS",
                  y=metric) + 
-            theme(panel.background = element_blank()) + 
-            coord_flip()
+            theme(panel.background = element_blank())
+        plot <- plot + coord_flip()  # flip plot coordinates
         return(plot)
     })
     
@@ -169,18 +171,24 @@ shinyServer(function(input, output) {
         colormap <- helper.colormapper(actors, c(input$actors_actor1, input$actors_actor2, input$actors_actor3))
         
         # plotting
+        mean_value = round(mean(df[, metric]), 2)
         plot <- ggplot(df, aes_string(x="PERSON", y=metric, fill="PERSON")) + 
             geom_bar(stat="identity", alpha=0.75) + 
             geom_text(aes_string(label=metric),
                       size=3.5, hjust=0, fontface="italic") + 
+            geom_hline(yintercept=mean_value, linetype="longdash", color="steelblue") + 
             scale_fill_manual(values=colormap) + 
             scale_y_continuous(breaks=pretty_breaks(5)) + 
-            labs(title=sprintf("Top 50 Actors by %s", metric),
+            labs(title=sprintf("Top 50 Actors\n(by %s, mean: %s)", metric, mean_value),
                  x="ACTORS",
                  y=sprintf("%s", metric)) + 
             theme(panel.background = element_blank(),
-                  legend.position = "none") + 
-            coord_flip()
+                  legend.position = "none")
+        # conditional best movie name layer
+        if(metric == "BEST_BO") {
+            plot <- plot + geom_text(aes(y=0, label=BEST_PICTURE), size=3.5, color="gray40", hjust=0, fontface="italic")
+        }
+        plot <- plot + coord_flip()  # flip plot coordinates
         return(plot)
     })
     
@@ -197,18 +205,24 @@ shinyServer(function(input, output) {
         colormap <- helper.colormapper(directors, c(input$directors_director1, input$directors_director2, input$directors_director3))
         
         # plotting
+        mean_value = round(mean(df[, metric]), 2)
         plot <- ggplot(df, aes_string(x="PERSON", y=metric, fill="PERSON")) + 
             geom_bar(stat="identity", alpha=0.75) + 
             geom_text(aes_string(label=metric),
                       size=3.5, hjust=0, fontface="italic") + 
+            geom_hline(yintercept=mean_value, linetype="longdash", color="steelblue") + 
             scale_fill_manual(values=colormap) + 
             scale_y_continuous(breaks=pretty_breaks(5)) + 
-            labs(title=sprintf("Top 50 Directors by %s", metric),
+            labs(title=sprintf("Top 50 Directors\n(by %s, mean: %s)", metric, mean_value),
                  x="DIRECTORS",
                  y=sprintf("%s", metric)) + 
             theme(panel.background = element_blank(),
-                  legend.position = "none") + 
-            coord_flip()
+                  legend.position = "none")
+        # conditional best movie name layer
+        if(metric == "BEST_BO") {
+            plot <- plot + geom_text(aes(y=0, label=BEST_PICTURE), size=3.5, color="gray40", hjust=0, fontface="italic")
+        }
+        plot <- plot + coord_flip()  # flip plot coordinates
         return(plot)
     })
     
@@ -225,18 +239,24 @@ shinyServer(function(input, output) {
         colormap <- helper.colormapper(producers, c(input$producers_producer1, input$producers_producer2, input$producers_producer3))
         
         # plotting
+        mean_value = round(mean(df[, metric]), 2)
         plot <- ggplot(df, aes_string(x="PERSON", y=metric, fill="PERSON")) + 
             geom_bar(stat="identity", alpha=0.75) + 
             geom_text(aes_string(label=metric),
                       size=3.5, hjust=0, fontface="italic") + 
+            geom_hline(yintercept=mean_value, linetype="longdash", color="steelblue") + 
             scale_fill_manual(values=colormap) + 
             scale_y_continuous(breaks=pretty_breaks(5)) + 
-            labs(title=sprintf("Top 50 Producers by %s)", metric),
+            labs(title=sprintf("Top 50 Producers\n(by %s, mean: %s)", metric, mean_value),
                  x="PRODUCERS",
                  y=sprintf("%s", metric)) + 
             theme(panel.background = element_blank(),
-                  legend.position = "none") + 
-            coord_flip()
+                  legend.position = "none")
+        # conditional best movie name layer
+        if(metric == "BEST_BO") {
+            plot <- plot + geom_text(aes(y=0, label=BEST_PICTURE), size=3.5, color="gray40", hjust=0, fontface="italic")
+        }
+        plot <- plot + coord_flip()  # flip plot coordinates
         return(plot)
     })
     
