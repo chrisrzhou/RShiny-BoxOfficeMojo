@@ -61,7 +61,3 @@ helper.colormapper <- function(array, conditions) {
     colormap <- setNames(colors, array)
     return(colormap)
 }
-
-helper.plotPeople <- function() {
-    
-}
