@@ -1,15 +1,23 @@
 h1, h2 {
     color: steelblue;
 }
+h2 {
+    font-size: 1.4em;
+}
 
 h3 {
-    font-size: 1.4em;
+    font-size: 1.2em;
     color: darkgray;
 }
 
-.text-small {
-    font-size: 12px;
-    font-style: italic;
+label span, .selectize-dropdown, .selectize-input {
+    font-size: 10px;
+}
+
+label.control-label {
+    font-size: 1.2em;
+    font-weight: 800;
+    color: darkgray;
 }
 
 tfoot {
@@ -18,6 +26,11 @@ tfoot {
 
 table {
     font-size: 11px;
+}
+
+.text-small {
+    font-size: 12px;
+    font-style: italic;
 }
 
 label[for=studios_studio1] {
