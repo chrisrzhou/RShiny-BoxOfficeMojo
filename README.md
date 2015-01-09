@@ -32,6 +32,7 @@ Throughout the application, the user is empowered with selection widgets to zoom
 
 
 ## Resources
+- [Homepage](https://chrisrzhou.github.io/)
 - [R Shiny Projects](http://ec2-54-183-164-175.us-west-1.compute.amazonaws.com:3838/)
 - [Github Project](https://github.com/chrisrzhou/RShiny-BoxOfficeMojo)
 - [Box Office Mojo](http://www.boxofficemojo.com/)
