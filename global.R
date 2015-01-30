@@ -6,7 +6,7 @@ library(ggplot2)
 library(scales)
 library(grid)
 library(reshape2)
-source("./parser.R")
+source("data/parser.R")
 
 
 # =========================================================================
