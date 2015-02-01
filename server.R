@@ -5,15 +5,15 @@ shinyServer(function(input, output) {
     # =========================================================================
     resource.studios <- reactive({
         df <- dataframes$studios %>%  # subset/filter df_base based on user selections
-            filter(YEAR >= input$studios_years_min,
-                   YEAR <= input$studios_years_max)
+            filter(YEAR >= input$studios_years[1],
+                   YEAR <= input$studios_years[2])
         return(df)
     })
     
     resource.oscars <- reactive({
         df <- dataframes$oscars %>%  # subset/filter df_base based on user selections
-            filter(YEAR >= input$oscars_years_min,
-                   YEAR <= input$oscars_years_max)
+            filter(YEAR >= input$oscars_years[1],
+                   YEAR <= input$oscars_years[2])
         return(df)
     })
     
@@ -85,8 +85,8 @@ shinyServer(function(input, output) {
             scale_x_continuous(breaks=seq(min(df$YEAR), max(df$YEAR), by=1)) + 
             scale_y_continuous(labels=dollar) + 
             labs(title="Annual Top 10 Studio Rankings by Box Office",
-                 x="YEAR",
-                 y="BOX OFFICE ($M)") + 
+                 x="Year",
+                 y="Box Office ($M)") + 
             theme(panel.background = element_blank())
         return(plot)
     })
@@ -109,8 +109,8 @@ shinyServer(function(input, output) {
             scale_fill_manual(values=colormap) + 
             scale_x_continuous(breaks=as.integer(seq(min(df$YEAR), max(df$YEAR), length.out=3))) + 
             labs(title="Annual Top 10 Studio Rankings by Movies Produced",
-                 x="YEAR",
-                 y="MOVIES PRODUCED") + 
+                 x="Year",
+                 y="Movies Produced") + 
             theme(panel.background = element_blank(),
                   panel.margin = unit(2, "lines"))
         return(plot)
@@ -123,8 +123,7 @@ shinyServer(function(input, output) {
         df <- resource.oscars() %>%
             arrange(YEAR) %>%  # order by year
             mutate(MOVIE = sprintf("%s (%s)", MOVIE, YEAR),
-                   MOVIE = factor(MOVIE, levels=unique(MOVIE)))  # concatenate movie and year for plot display
-        # convert to factor for fixing plot sort ordering
+                   MOVIE = factor(MOVIE, levels=unique(MOVIE)))  # convert to factor for fixing plot sort ordering
         
         # plotting
         mean_value = round(mean(df[, metric]), 2)
@@ -136,9 +135,10 @@ shinyServer(function(input, output) {
             scale_fill_manual(values=D3COLORMAP20) + 
             scale_y_continuous(breaks=pretty_breaks(5)) + 
             labs(title=sprintf("Annual Oscar Winners\n(by %s, mean: %s)", metric, mean_value),
-                 x="OSCARS",
+                 x="Oscar Winners",
                  y=metric) + 
-            theme(panel.background = element_blank())
+            theme(panel.background = element_blank(),
+                  axis.ticks.y = element_blank())
         plot <- plot + coord_flip()  # flip plot coordinates
         return(plot)
     })
@@ -180,10 +180,11 @@ shinyServer(function(input, output) {
             scale_fill_manual(values=colormap) + 
             scale_y_continuous(breaks=pretty_breaks(5)) + 
             labs(title=sprintf("Top 50 Actors\n(by %s, mean: %s)", metric, mean_value),
-                 x="ACTORS",
+                 x="Actors",
                  y=sprintf("%s", metric)) + 
             theme(panel.background = element_blank(),
-                  legend.position = "none")
+                  legend.position = "none",
+                  axis.ticks.y = element_blank())
         # conditional best movie name layer
         if(metric == "BEST_BO") {
             plot <- plot + geom_text(aes(y=0, label=BEST_PICTURE), size=3.5, color="gray40", hjust=0, fontface="italic")
@@ -214,10 +215,11 @@ shinyServer(function(input, output) {
             scale_fill_manual(values=colormap) + 
             scale_y_continuous(breaks=pretty_breaks(5)) + 
             labs(title=sprintf("Top 50 Directors\n(by %s, mean: %s)", metric, mean_value),
-                 x="DIRECTORS",
+                 x="Directors",
                  y=sprintf("%s", metric)) + 
             theme(panel.background = element_blank(),
-                  legend.position = "none")
+                  legend.position = "none",
+                  axis.ticks.y = element_blank())
         # conditional best movie name layer
         if(metric == "BEST_BO") {
             plot <- plot + geom_text(aes(y=0, label=BEST_PICTURE), size=3.5, color="gray40", hjust=0, fontface="italic")
@@ -248,10 +250,11 @@ shinyServer(function(input, output) {
             scale_fill_manual(values=colormap) + 
             scale_y_continuous(breaks=pretty_breaks(5)) + 
             labs(title=sprintf("Top 50 Producers\n(by %s, mean: %s)", metric, mean_value),
-                 x="PRODUCERS",
+                 x="Producers",
                  y=sprintf("%s", metric)) + 
             theme(panel.background = element_blank(),
-                  legend.position = "none")
+                  legend.position = "none",
+                  axis.ticks.y = element_blank())
         # conditional best movie name layer
         if(metric == "BEST_BO") {
             plot <- plot + geom_text(aes(y=0, label=BEST_PICTURE), size=3.5, color="gray40", hjust=0, fontface="italic")

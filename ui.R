@@ -18,41 +18,41 @@ shinyUI(fluidPage(
             conditionalPanel(
                 condition="input.tabset == 'Oscars'",
                 selectInput(inputId="oscars_metric", label="Select Metric", choices=choices$oscars_metric, selected=choices$oscars_metric[[1]]),
-                sliderInput(inputId="oscars_years_min", label="Filter Years", min=min(choices$oscars_years), max=max(choices$oscars_years), value=min(choices$oscars_years), step=1, format="####"),
-                sliderInput(inputId="oscars_years_max", label="", min=min(choices$oscars_years), max=max(choices$oscars_years), value=max(choices$oscars_years), step=1, format="####")
+                sliderInput(inputId="oscars_years", label="Filter Years", min=min(choices$oscars_years), max=max(choices$oscars_years),
+                            value=c(min(choices$oscars_years), max=max(choices$oscars_years)), step=1, format="####")
             ),
             
             conditionalPanel(
                 condition="input.tabset == 'Actors'",
                 selectInput(inputId="actors_movies_metric", label="Select Metric", choices=choices$movies_metric, selected=choices$movies_metric[[1]]),
-                selectInput(inputId="actors_actor1", label="Highlight Actor 1:", choices=choices$actors, selected=choices$actors[[1]]),
-                selectInput(inputId="actors_actor2", label="Highlight Actor 2:", choices=choices$actors, selected=choices$actors[[2]]),
-                selectInput(inputId="actors_actor3", label="Highlight Actor 3:", choices=choices$actors, selected=choices$actors[[3]])
+                selectInput(inputId="actors_actor1", label="Actor 1:", choices=choices$actors, selected=choices$actors[[1]]),
+                selectInput(inputId="actors_actor2", label="Actor 2:", choices=choices$actors, selected=choices$actors[[2]]),
+                selectInput(inputId="actors_actor3", label="Actor 3:", choices=choices$actors, selected=choices$actors[[3]])
             ),
             
             conditionalPanel(
                 condition="input.tabset == 'Directors'",
                 selectInput(inputId="directors_movies_metric", label="Select Metric", choices=choices$movies_metric, selected=choices$movies_metric[[1]]),
-                selectInput(inputId="directors_director1", label="Highlight Director 1:", choices=choices$directors, selected=choices$directors[[1]]),
-                selectInput(inputId="directors_director2", label="Highlight Director 2:", choices=choices$directors, selected=choices$directors[[2]]),
-                selectInput(inputId="directors_director3", label="Highlight Director 3:", choices=choices$directors, selected=choices$directors[[3]])
+                selectInput(inputId="directors_director1", label="Director 1:", choices=choices$directors, selected=choices$directors[[1]]),
+                selectInput(inputId="directors_director2", label="Director 2:", choices=choices$directors, selected=choices$directors[[2]]),
+                selectInput(inputId="directors_director3", label="Director 3:", choices=choices$directors, selected=choices$directors[[3]])
             ),
             
             conditionalPanel(
                 condition="input.tabset == 'Producers'",
                 selectInput(inputId="producers_movies_metric", label="Select Metric", choices=choices$movies_metric, selected=choices$movies_metric[[1]]),
-                selectInput(inputId="producers_producer1", label="Highlight Producer 1:", choices=choices$producers, selected=choices$producers[[1]]),
-                selectInput(inputId="producers_producer2", label="Highlight Producer 2:", choices=choices$producers, selected=choices$producers[[2]]),
-                selectInput(inputId="producers_producer3", label="Highlight Producer 3:", choices=choices$producers, selected=choices$producers[[3]])
+                selectInput(inputId="producers_producer1", label="Producer 1:", choices=choices$producers, selected=choices$producers[[1]]),
+                selectInput(inputId="producers_producer2", label="Producer 2:", choices=choices$producers, selected=choices$producers[[2]]),
+                selectInput(inputId="producers_producer3", label="Producer 3:", choices=choices$producers, selected=choices$producers[[3]])
             ),
             
             conditionalPanel(
                 condition="input.tabset == 'Studios'",
-                selectInput(inputId="studios_studio1", label="Highlight Studio 1:", choices=choices$studios, selected=choices$studios[[1]]),
-                selectInput(inputId="studios_studio2", label="Highlight Studio 2:", choices=choices$studios, selected=choices$studios[[2]]),
-                selectInput(inputId="studios_studio3", label="Highlight Studio 3:", choices=choices$studios, selected=choices$studios[[3]]),
-                sliderInput(inputId="studios_years_min", label="Filter Years", min=min(choices$studios_years), max=max(choices$studios_years), value=min(choices$studios_years), step=1, format="####"),
-                sliderInput(inputId="studios_years_max", label="", min=min(choices$studios_years), max=max(choices$studios_years), value=max(choices$studios_years), step=1, format="####")
+                selectInput(inputId="studios_studio1", label="Studio 1:", choices=choices$studios, selected=choices$studios[[1]]),
+                selectInput(inputId="studios_studio2", label="Studio 2:", choices=choices$studios, selected=choices$studios[[2]]),
+                selectInput(inputId="studios_studio3", label="Studio 3:", choices=choices$studios, selected=choices$studios[[3]]),
+                sliderInput(inputId="studios_years", label="Filter Years", min=min(choices$studios_years), max=max(choices$studios_years),
+                            value=c(min(choices$studios_years), max(choices$studios_years)), step=1, format="####")
             ),
             
             width=3

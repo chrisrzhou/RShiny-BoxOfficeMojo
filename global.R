@@ -52,7 +52,7 @@ D3COLORMAP20 <- c("#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c",
 # @return: returns a named vector mapping colors to the original array.
 helper.colormapper <- function(array, conditions) {
     colors <- sapply(array, function(element) {
-        color <- "gray80"
+        color <- "gray85"
         for (i in seq_along(conditions)) {
             if (element == conditions[[i]]) color <- COLORMAP[[i]]
         }
